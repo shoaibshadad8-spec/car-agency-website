@@ -2,92 +2,153 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>حاسبة أقساط السيارات</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معرض السيارات | حاسبة الأقساط</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="calculator-card">
-  <h2>حاسبة تقسيط السيارات</h2>
-  
-  <div class="input-field">
-    <label for="carPrice">سعر السيارة</label>
-    <input type="number" id="carPrice" value="800000">
-  </div>
+  <header class="header">
+    <div class="container nav">
+      <a href="#home" class="logo"><i class="fa-solid fa-car-side"></i> معرض السيارات</a>
+      <button class="menu-btn" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+      <nav id="nav">
+        <a href="#home">الرئيسية</a>
+        <a href="#cars">السيارات</a>
+        <a href="#calculator">حاسبة الأقساط</a>
+        <a href="#contact">تواصل معنا</a>
+      </nav>
+    </div>
+  </header>
 
-  <div class="input-field">
-    <label for="depositAmount">المقدم</label>
-    <input type="number" id="depositAmount" value="200000">
-  </div>
+  <section class="hero" id="home">
+    <div class="container">
+      <h1>اختار سيارتك واحسب قسطك بسهولة</h1>
+      <p>تصفح السيارات المتاحة، قارن الأسعار، واعرف القسط الشهري قبل ما تقرر.</p>
+      <div class="hero-buttons">
+        <a href="#cars" class="btn primary">شوف السيارات</a>
+        <a href="#calculator" class="btn secondary">احسب القسط</a>
+      </div>
+    </div>
+  </section>
 
-  <div class="input-field">
-    <label for="durationYears">مدة التقسيط</label>
-    <select id="durationYears">
-      <option value="1">سنة واحدة</option>
-      <option value="2">سنتين</option>
-      <option value="3" selected>3 سنوات</option>
-      <option value="4">4 سنوات</option>
-      <option value="5">5 سنوات</option>
-      <option value="7">7 سنوات</option>
-    </select>
-  </div>
+  <section class="section container" id="cars">
+    <h2 class="section-title">السيارات المتاحة</h2>
 
-  <div class="actions">
-    <button type="button" id="calcBtn" onclick="calculate()">احسب</button>
-    <button type="button" id="resetBtn" onclick="clearData()">مسح</button>
-  </div>
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="ابحث باسم السيارة أو الماركة...">
 
-  <div id="summaryPanel" class="summary-panel" style="display: none;">
-    <h3>نتيجة الحساب</h3>
-    <div class="info-box">
-      <p>المبلغ المتبقي: <strong id="outLoan">0</strong> ج.م</p>
-      <p>نسبة الفائدة: <strong id="outRate">0%</strong></p>
-      <p>إجمالي الفائدة: <strong id="outProfit">0</strong> ج.م</p>
-      <p>الإجمالي المطلوب: <strong id="outTotal">0</strong> ج.م</p>
-      <p>عدد الشهور: <strong id="outMonths">0</strong> شهر</p>
-      <hr>
-      <p class="highlight">القسط الشهري: <span id="outMonthly">0</span> ج.م</p>
+      <select id="brandSelect">
+        <option value="all">كل الماركات</option>
+      </select>
+
+      <select id="priceSelect">
+        <option value="all">كل الأسعار</option>
+        <option value="low">أقل من 600 ألف</option>
+        <option value="mid">من 600 ألف إلى 1.2 مليون</option>
+        <option value="high">أكثر من 1.2 مليون</option>
+      </select>
+
+      <select id="sortSelect">
+        <option value="default">الترتيب الافتراضي</option>
+        <option value="low">الأرخص أولاً</option>
+        <option value="high">الأغلى أولاً</option>
+        <option value="year">الأحدث أولاً</option>
+      </select>
+
+      <label class="fav-check">
+        <input type="checkbox" id="favOnly"> المفضلة فقط
+      </label>
+    </div>
+
+    <p class="count" id="carsCount"></p>
+    <div class="cars-grid" id="carsGrid"></div>
+    <p class="note">* الأسعار المعروضة أمثلة للتجربة فقط.</p>
+  </section>
+
+  <section class="section container" id="calculator">
+    <h2 class="section-title">حاسبة تقسيط السيارات</h2>
+
+    <div class="calculator-card">
+      <div class="input-field">
+        <label for="carPrice">سعر السيارة</label>
+        <input type="number" id="carPrice" value="800000">
+      </div>
+
+      <div class="input-field">
+        <label for="depositAmount">المقدم</label>
+        <input type="number" id="depositAmount" value="200000">
+      </div>
+
+      <div class="input-field">
+        <label for="durationYears">مدة التقسيط</label>
+        <select id="durationYears">
+          <option value="1">سنة واحدة</option>
+          <option value="2">سنتين</option>
+          <option value="3" selected>3 سنوات</option>
+          <option value="4">4 سنوات</option>
+          <option value="5">5 سنوات</option>
+          <option value="7">7 سنوات</option>
+        </select>
+      </div>
+
+      <p class="error" id="calcError"></p>
+
+      <div class="actions">
+        <button type="button" id="calcBtn">احسب</button>
+        <button type="button" id="resetBtn">مسح</button>
+      </div>
+
+      <div id="summaryPanel" class="summary-panel" style="display: none;">
+        <h3>نتيجة الحساب</h3>
+        <div class="info-box">
+          <p>المبلغ المتبقي: <strong id="outLoan">0</strong> ج.م</p>
+          <p>نسبة الفائدة: <strong id="outRate">0%</strong></p>
+          <p>إجمالي الفائدة: <strong id="outProfit">0</strong> ج.م</p>
+          <p>الإجمالي المطلوب: <strong id="outTotal">0</strong> ج.م</p>
+          <p>عدد الشهور: <strong id="outMonths">0</strong> شهر</p>
+          <hr>
+          <p class="highlight">القسط الشهري: <span id="outMonthly">0</span> ج.م</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="contact">
+    <h2 class="section-title">تواصل معنا</h2>
+
+    <form class="contact-form" id="contactForm">
+      <div class="input-field">
+        <label for="userName">الاسم</label>
+        <input type="text" id="userName" placeholder="اكتب اسمك">
+      </div>
+      <div class="input-field">
+        <label for="userPhone">رقم الموبايل</label>
+        <input type="text" id="userPhone" placeholder="01xxxxxxxxx">
+      </div>
+      <div class="input-field">
+        <label for="userMessage">رسالتك</label>
+        <textarea id="userMessage" rows="4" placeholder="عايز تسأل عن إيه؟"></textarea>
+      </div>
+      <p class="error" id="formError"></p>
+      <p class="success" id="formSuccess"></p>
+      <button type="submit" class="btn primary full">إرسال</button>
+    </form>
+  </section>
+
+  <footer>
+    <div class="container">© 2026 معرض السيارات · مشروع تعليمي</div>
+  </footer>
+
+  <!-- نافذة تفاصيل السيارة -->
+  <div class="modal" id="carModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+      <div id="modalContent"></div>
     </div>
   </div>
-</div>
 
-<script>
-  function calculate() {
-    let price = Number(document.getElementById('carPrice').value);
-    let deposit = Number(document.getElementById('depositAmount').value);
-    let years = Number(document.getElementById('durationYears').value);
-
-    let loanAmount = price - deposit;
-    let profitRate = 0;
-
-    if (years == 1) { profitRate = 0.10; }
-    else if (years == 2) { profitRate = 0.18; }
-    else if (years == 3) { profitRate = 0.29; }
-    else if (years == 4) { profitRate = 0.38; }
-    else if (years == 5) { profitRate = 0.49; }
-    else if (years == 7) { profitRate = 0.79; }
-
-    let totalProfit = loanAmount * profitRate;
-    let netTotal = loanAmount + totalProfit;
-    let totalMonths = years * 12;
-    let monthlyPayment = netTotal / totalMonths;
-
-    document.getElementById('outLoan').textContent = loanAmount;
-    document.getElementById('outRate').textContent = (profitRate * 100) + '%';
-    document.getElementById('outProfit').textContent = totalProfit;
-    document.getElementById('outTotal').textContent = netTotal;
-    document.getElementById('outMonths').textContent = totalMonths;
-    document.getElementById('outMonthly').textContent = monthlyPayment.toFixed(2);
-
-    document.getElementById('summaryPanel').style.display = 'block';
-  }
-
-  function clearData() {
-    document.getElementById('carPrice').value = '';
-    document.getElementById('depositAmount').value = '';
-    document.getElementById('summaryPanel').style.display = 'none';
-  }
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
